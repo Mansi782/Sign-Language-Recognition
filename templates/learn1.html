@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Module with Photo Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+    }
+
+    /* Styling for the search bar */
+    .search-container {
+      margin-bottom: 30px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 300px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .photo-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .photo {
+      text-align: center;
+    }
+
+    .photo img {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      height: 200px;
+      width: 250px;
+    }
+
+    .error {
+      color: red;
+      margin-top: 20px;
+    }
+
+    #result img {
+      margin-top: 20px;
+      max-width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Learn Module</h1>
+
+  <!-- Search Feature -->
+  <div class="search-container">
+    <h2>Search for an Alphabet</h2>
+    <input type="text" id="alphabetInput" maxlength="1" placeholder="Enter a letter (A-Z)">
+    <button onclick="searchAlphabet()">Search</button>
+    <div id="result"></div>
+  </div>
+
+  <!-- Photo Gallery -->
+  <div class="photo-gallery">
+    <div class="photo">
+      <img src="images/A.jpg" alt="Alphabet A">
+      <p>A</p>
+    </div>
+    <div class="photo">
+      <img src="images/B.jpg" alt="Alphabet B">
+      <p>B</p>
+    </div>
+    <div class="photo">
+      <img src="images/C.jpg" alt="Alphabet C">
+      <p>C</p>
+    </div>
+    <div class="photo">
+      <img src="images/D.jpg" alt="Alphabet D">
+      <p>D</p>
+    </div>
+    <div class="photo">
+      <img src="images/E.jpg" alt="Alphabet E">
+      <p>E</p>
+    </div>
+    <!-- Add more photos here as needed -->
+  </div>
+
+  <script>
+    function searchAlphabet() {
+      const input = document.getElementById('alphabetInput').value.toUpperCase();
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = ""; // Clear previous results
+
+      if (!input.match(/^[A-Z]$/)) {
+        resultDiv.innerHTML = "<p class='error'>Please enter a valid letter (A-Z).</p>";
+        return;
+      }
+
+      const img = document.createElement('img');
+      img.src = `images/${input}.jpg`; // Ensure the image filenames match this pattern
+      img.alt = `Sign language for ${input}`;
+      img.onerror = () => {
+        resultDiv.innerHTML = "<p class='error'>Image not found for the entered alphabet.</p>";
+      };
+      resultDiv.appendChild(img);
+    }
+  </script>
+</body>
+</html>

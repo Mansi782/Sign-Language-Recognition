@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #videoFeed {
+            border: 2px solid #333;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Language Detection</h1>
+        <img id="videoFeed" src="{{ url_for('video_feed') }}" width="640" height="480">
+        <div class="controls">
+            <button id="startBtn" onclick="startDetection()">Start Detection</button>
+            <button id="stopBtn" onclick="stopDetection()" disabled>Stop Detection</button>
+        </div>
+        <div class="status" id="status">Ready to start detection</div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const status = document.getElementById('status');
+
+        async function startDetection() {
+            try {
+                const response = await fetch('/start');
+                const data = await response.json();
+                if (data.status === 'success') {
+                    startBtn.disabled = true;
+                    stopBtn.disabled = false;
+                    status.textContent = 'Detection running...';
+                } else {
+                    status.textContent = 'Error: ' + data.message;
+                }
+            } catch (error) {
+                status.textContent = 'Error starting detection: ' + error;
+            }
+        }
+
+        async function stopDetection() {
+            try {
+                const response = await fetch('/stop');
+                const data = await response.json();
+                if (data.status === 'success') {
+                    startBtn.disabled = false;
+                    stopBtn.disabled = true;
+                    status.textContent = 'Detection stopped';
+                } else {
+                    status.textContent = 'Error: ' + data.message;
+                }
+            } catch (error) {
+                status.textContent = 'Error stopping detection: ' + error;
+            }
+        }
+    </script>
+</body>
+</html>
+        
